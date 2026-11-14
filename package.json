@@ -1,0 +1,25 @@
+{
+  "name": "fantasy-launcher",
+  "productName": "Fantasy Launcher",
+  "version": "1.0.0",
+  "description": "A lightweight, fantasy-styled Minecraft launcher with Modrinth mod support, Fabric/Quilt/Forge/NeoForge loaders and offline profiles.",
+  "main": "main.cjs",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "preview": "node server.cjs",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.fantasylauncher.app",
+    "productName": "Fantasy Launcher",
+    "files": ["main.cjs", "preload.cjs", "core/**", "public/**"]
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "discord-rpc": "^4.0.1"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0"
+  }
+}
