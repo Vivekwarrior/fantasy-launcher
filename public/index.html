@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fantasy Launcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Spectral:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark" data-accent="gold">
+<canvas id="fx"></canvas>
+<div id="vignette"></div>
+
+<header class="titlebar">
+  <div class="brand">
+    <img class="logo-img" src="logo.png" alt="Fantasy Launcher logo">
+    <div class="brand-text">
+      <h1>Fantasy Launcher</h1>
+      <span>Lightweight Minecraft launcher · by dr.denji</span>
+    </div>
+  </div>
+  <div class="tb-actions">
+    <button id="btn-theme" class="tb-icon" title="Switch dark / divine theme">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3.2v2M12 18.8v2M3.2 12h2M18.8 12h2M5.8 5.8l1.4 1.4M16.8 16.8l1.4 1.4M18.2 5.8l-1.4 1.4M7.2 16.8l-1.4 1.4"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 13.2A7.5 7.5 0 0 1 10.8 4.5 7.7 7.7 0 1 0 19.5 13.2Z"/></svg>
+    </button>
+    <div class="win-controls win-only">
+      <button id="win-min" title="Minimize">–</button>
+      <button id="win-max" title="Maximize">▢</button>
+      <button id="win-close" class="close" title="Close">✕</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="sidebar">
+    <button class="nav-btn active" data-nav="play">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 16.5 7.5"/><path d="M16.5 7.5 20 4"/><path d="M9 12.5 12.5 16"/><path d="M6 18 4.2 20.2"/></svg>
+      <label>Play</label>
+    </button>
+    <button class="nav-btn" data-nav="mods">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 18.3 7.1v9.8L12 20.6 5.7 16.9V7.1Z"/><path d="M12 3.4v17.2M5.7 7.1l12.6 9.8"/></svg>
+      <label>Mods</label>
+    </button>
+    <button class="nav-btn" data-nav="shots">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7" width="17" height="12.5" rx="2.5"/><circle cx="12" cy="13" r="3.4"/><path d="M9 7l1.2-2.2h3.6L15 7"/></svg>
+      <label>Shots</label>
+    </button>
+    <button class="nav-btn" data-nav="accounts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5.5 19.2c1.2-3.4 3.7-4.9 6.5-4.9s5.3 1.5 6.5 4.9"/></svg>
+      <label>Accounts</label>
+    </button>
+    <button class="nav-btn" data-nav="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3.1"/><path d="M12 4.6v2M12 17.4v2M4.6 12h2M17.4 12h2M6.9 6.9l1.4 1.4M15.7 15.7l1.4 1.4M17.1 6.9l-1.4 1.4M8.3 15.7l-1.4 1.4"/></svg>
+      <label>Settings</label>
+    </button>
+    <div class="side-foot"><span class="dot-rule">·</span><small>1.0</small></div>
+  </nav>
+
+  <main class="content">
+
+    <section class="page active" data-page="play">
+      <div class="frame hero">
+        <div class="hero-inner">
+          <div class="hero-emblem" aria-hidden="true">
+            <img src="logo.png" alt="" class="hero-logo">
+            <div class="emblem-glow"></div>
+          </div>
+          <div class="hero-body">
+            <p class="eyebrow">Fantasy Launcher</p>
+            <h2 class="hero-title">Ready to play</h2>
+            <p class="hero-sub">Versions, loaders and mods — handled in one quiet, lightweight place.</p>
+
+            <div class="hero-controls">
+              <div class="field">
+                <label for="sel-version">Version</label>
+                <select id="sel-version"><option>Loading…</option></select>
+              </div>
+              <div class="field">
+                <label for="sel-loader">Loader</label>
+                <select id="sel-loader">
+                  <option value="vanilla">Vanilla</option>
+                  <option value="fabric">Fabric</option>
+                  <option value="quilt">Quilt</option>
+                  <option value="forge">Forge</option>
+                  <option value="neoforge">NeoForge</option>
+                </select>
+              </div>
+              <button id="btn-play" class="btn-gold btn-play">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 18 16.5 7.5M16.5 7.5 20 4M9 12.5 12.5 16M6 18 4.2 20.2"/></svg>
+                Play
+              </button>
+            </div>
+            <p class="hero-note">Pick a loader + version and press Play once — it installs itself and becomes a saved <b>loader profile</b> at the top of the version list. Next time: select it, press Play, done.</p>
+
+            <div class="progress-wrap" id="progress-wrap" hidden>
+              <div class="stage-line"><span id="stage-msg">Preparing…</span><span id="stage-pct"></span></div>
+              <div class="pbar"><div class="pfill" id="pfill"></div></div>
+              <pre class="log" id="launch-log" hidden></pre>
+            </div>
+
+            <div class="chips">
+              <span class="chip" id="chip-account">No account selected</span>
+              <span class="chip" id="chip-ram">4 GB</span>
+              <span class="chip" id="chip-loader">Vanilla</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-row">
+        <div class="frame mini-card">
+          <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.4 18.3 7.1v9.8L12 20.6 5.7 16.9V7.1Z"/><path d="M12 3.4v17.2M5.7 7.1l12.6 9.8"/></svg>
+          <h3>Mod workshop</h3>
+          <p>Search and install any mod, with Fabric, Quilt, Forge and NeoForge support — one click.</p>
+        </div>
+        <div class="frame mini-card">
+          <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4.5 13.5H11L9.5 21 19 10.5h-6.5Z"/></svg>
+          <h3>Performance built in</h3>
+          <p>Tuned Java flags for steadier FPS and lower RAM use, plus a one-click FPS mod pack with shader support.</p>
+        </div>
+        <div class="frame mini-card">
+          <svg class="mini-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.6"/><path d="M5.5 19.2c1.2-3.4 3.7-4.9 6.5-4.9s5.3 1.5 6.5 4.9"/></svg>
+          <h3>Offline accounts</h3>
+          <p>Create profiles without signing in — play singleplayer and offline-mode servers instantly.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" data-page="mods">
+      <div class="page-head">
+        <div>
+          <h2 class="page-title">Mods</h2>
+          <p class="page-sub" id="mods-hint"></p>
+        </div>
+        <div class="search-box">
+          <input id="mod-query" type="text" placeholder="Search mods — sodium, jei, iris…" spellcheck="false">
+          <button id="btn-mod-search" class="btn-gold">Search</button>
+        </div>
+      </div>
+
+      <div class="frame pack-card">
+        <div class="pack-text">
+          <h3>⚡ One-click performance pack</h3>
+          <p id="pack-note">FPS engine, memory optimization and shader support for your loader.</p>
+        </div>
+        <button id="btn-fps-pack" class="btn-gold">Install pack</button>
+      </div>
+
+      <div class="scroll-area">
+        <div id="mod-status" class="muted"></div>
+        <div id="mod-results" class="mod-grid"></div>
+        <div id="mod-loadmore-wrap" class="center" hidden><button id="btn-mod-more" class="btn-ghost">Load more</button></div>
+
+        <h3 class="section-title">Installed <span class="muted" id="installed-count"></span></h3>
+        <div class="installed-note muted" id="installed-note"></div>
+        <div id="mod-installed" class="installed-list"></div>
+      </div>
+    </section>
+
+    <section class="page" data-page="shots">
+      <div class="page-head">
+        <div>
+          <h2 class="page-title">Screenshots</h2>
+          <p class="page-sub">Everything you capture in-game with F2 shows up here.</p>
+        </div>
+        <button id="btn-shots-refresh" class="btn-ghost">Refresh</button>
+      </div>
+      <div class="scroll-area">
+        <div id="shots-grid" class="shots-grid"></div>
+        <p id="shots-empty" class="muted" hidden>Screenshots appear after you play through this launcher (game folder → screenshots).</p>
+      </div>
+    </section>
+
+    <section class="page" data-page="accounts">
+      <div class="page-head">
+        <div>
+          <h2 class="page-title">Accounts</h2>
+          <p class="page-sub">Offline profiles play singleplayer and join offline-mode servers. Premium-only servers (Hypixel and similar) require an official Microsoft account.</p>
+        </div>
+      </div>
+      <div class="scroll-area two-col">
+        <div class="frame panel">
+          <h3 class="panel-title">Create offline profile</h3>
+          <div class="forge-row">
+            <input id="acc-name" type="text" maxlength="16" placeholder="Username — 3–16 characters" spellcheck="false">
+            <button id="btn-acc-add" class="btn-gold">Create</button>
+          </div>
+          <p class="hint">Letters, numbers and underscores. Create as many as you like and switch anytime.</p>
+          <div class="divider"></div>
+          <h3 class="panel-title">Official account</h3>
+          <button id="btn-acc-ms" class="btn-ghost" disabled>Sign in with Microsoft — coming soon</button>
+          <p class="hint">Premium (Microsoft) sign-in is on the way. Offline profiles already work for singleplayer and offline-mode servers.</p>
+          <div class="divider"></div>
+          <h3 class="panel-title">Skins</h3>
+          <p class="hint">Press <b>Skin</b> on a profile card to set a PNG skin. It is saved to your skin library and previewed here in the launcher. To show it to other players on offline-mode servers, use an in-game skin mod such as FabricTailor.</p>
+        </div>
+        <div class="frame panel">
+          <h3 class="panel-title">Your profiles</h3>
+          <div id="account-list" class="account-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" data-page="settings">
+      <div class="page-head">
+        <div>
+          <h2 class="page-title">Settings</h2>
+          <p class="page-sub">Memory, resolution, performance and appearance.</p>
+        </div>
+      </div>
+      <div class="scroll-area two-col">
+        <div class="frame panel">
+          <h3 class="panel-title">Game</h3>
+          <div class="field-row">
+            <label for="set-ram">Memory (RAM)</label>
+            <div class="slider-line">
+              <input type="range" id="set-ram" min="1024" max="16384" step="512" value="4096">
+              <output id="set-ram-out">4 GB</output>
+            </div>
+            <p class="hint">4–6 GB is ideal for modded play; more is not always faster.</p>
+          </div>
+          <div class="field-row toggle-row">
+            <label class="switch"><input type="checkbox" id="set-perf" checked><span class="track"><span class="knob"></span></span></label>
+            <div>
+              <div class="tg-title">Performance mode</div>
+              <p class="hint">Tuned Java garbage-collector flags — steadier FPS, fewer stutters. Recommended: on.</p>
+            </div>
+          </div>
+          <div class="field-row toggle-row">
+            <label class="switch"><input type="checkbox" id="set-discord" checked><span class="track"><span class="knob"></span></span></label>
+            <div>
+              <div class="tg-title">Discord status</div>
+              <p class="hint">Show Fantasy Launcher as “Now playing” on your Discord profile while you're in the game. Needs the Discord desktop app.</p>
+            </div>
+          </div>
+          <div class="field-row toggle-row">
+            <label class="switch"><input type="checkbox" id="set-hideplay" checked><span class="track"><span class="knob"></span></span></label>
+            <div>
+              <div class="tg-title">Auto-hide while playing</div>
+              <p class="hint">The launcher steps aside when the game starts and comes back when you quit. Closing the launcher never closes the game.</p>
+            </div>
+          </div>
+          <div class="field-row half">
+            <div><label for="set-w">Width</label><input id="set-w" type="number" value="1280" min="320"></div>
+            <div><label for="set-h">Height</label><input id="set-h" type="number" value="720" min="240"></div>
+          </div>
+          <div class="field-row">
+            <label>Java runtime</label>
+            <div class="java-status muted" id="java-status">Not checked yet. Java is auto-detected — and auto-installed privately if missing; your system Java is never modified.</div>
+            <div class="btn-row"><button id="btn-java-check" class="btn-ghost">Check / install Java</button></div>
+          </div>
+          <div class="field-row">
+            <label for="set-java">Custom Java path <span class="muted">(blank = auto)</span></label>
+            <input id="set-java" type="text" placeholder="java" spellcheck="false">
+          </div>
+          <div class="field-row">
+            <label for="set-dir">Game directory</label>
+            <input id="set-dir" type="text" readonly value="">
+          </div>
+          <div class="btn-row">
+            <button id="btn-open-game" class="btn-ghost">Open game folder</button>
+            <button id="btn-open-mods" class="btn-ghost">Open mods folder</button>
+          </div>
+        </div>
+        <div class="frame panel">
+          <h3 class="panel-title">Appearance</h3>
+          <div class="field-row">
+            <label>Theme</label>
+            <div class="seg" role="group" aria-label="Theme">
+              <button id="theme-dark" class="seg-btn" data-theme-pick="dark">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 13.2A7.5 7.5 0 0 1 10.8 4.5 7.7 7.7 0 1 0 19.5 13.2Z"/></svg>
+                Dark fantasy
+              </button>
+              <button id="theme-divine" class="seg-btn" data-theme-pick="divine">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3.2v2M12 18.8v2M3.2 12h2M18.8 12h2M5.8 5.8l1.4 1.4M16.8 16.8l1.4 1.4"/></svg>
+                Divine
+              </button>
+            </div>
+          </div>
+          <div class="field-row">
+            <label>Accent color</label>
+            <div class="accent-row">
+              <button class="accent-dot gold" data-accent-pick="gold" title="Royal gold"></button>
+              <button class="accent-dot violet" data-accent-pick="violet" title="Arcane violet"></button>
+              <button class="accent-dot emerald" data-accent-pick="emerald" title="Forest emerald"></button>
+              <button class="accent-dot crimson" data-accent-pick="crimson" title="Dragon crimson"></button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <h3 class="panel-title">About</h3>
+          <p class="about">
+            <b>Fantasy Launcher 1.0</b><br>
+            Made by <b>dr.denji</b> · contact: Instagram <b>@loid_edits1</b><br><br>
+            A lightweight Minecraft launcher — real game downloads, one-click mods and performance pack, Fabric/Quilt/Forge/NeoForge loaders, offline profiles, Dark &amp; Divine themes.<br><br>
+            <span class="muted">Shaders: install the performance pack — it includes Iris (Fabric/Quilt) or Oculus (Forge/NeoForge), so shaders run on the optimized engine. Java is handled automatically.</span>
+          </p>
+          <div class="btn-row" style="margin-top:14px"><button id="btn-update-check" class="btn-ghost">Check for updates</button></div>
+        </div>
+      </div>
+
+      <div class="frame panel kb-panel">
+        <h3 class="panel-title">Keybind presets</h3>
+        <p class="hint">Set your controls in-game once, then save them here by name and apply any preset later with one click. Only the keybind lines of options.txt change — a <b>.bak backup</b> is created first. <span id="kb-current" class="muted"></span></p>
+        <div class="forge-row">
+          <input id="kb-name" type="text" maxlength="32" placeholder="Preset name — e.g. PvP, Building" spellcheck="false">
+          <button id="kb-save" class="btn-gold">Save current</button>
+        </div>
+        <div id="kb-list" class="kb-list"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="statusbar">
+  <span id="status-l">Ready.</span>
+  <span id="status-r">© dr.denji</span>
+</footer>
+
+<div id="toasts"></div>
+
+<div id="mod-modal" class="modal-veil" hidden>
+  <div class="modal">
+    <h3 class="modal-title">Hold on — mod check</h3>
+    <p class="hint" id="mm-sub">These mods don't match the version/loader you're about to play, and would likely crash the game:</p>
+    <div id="mm-list" class="mm-list"></div>
+    <div class="btn-row modal-actions">
+      <button id="mm-disable" class="btn-gold">Disable them &amp; launch</button>
+      <button id="mm-anyway" class="btn-ghost">Launch anyway</button>
+      <button id="mm-cancel" class="btn-ghost">Cancel</button>
+    </div>
+    <p class="hint mm-foot">Disabled mods only turn off for this combo — nothing is deleted.</p>
+  </div>
+</div>
+
+<script src="stars.js"></script>
+<script src="demo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
